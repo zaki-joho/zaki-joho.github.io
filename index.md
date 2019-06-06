@@ -1,14 +1,10 @@
-## Contents
+# Contents
 
-[Library](https://github.com/zaki-joho/ProconLibrary)
-[twitter](https://twitter.com/zaki_joho)
-[AtCoder](https://atcoder.jp/users/zaki_)
-[CodeForces](https://codeforces.com/profile/zaki_joho)
-[TopCoder](https://www.topcoder.com/members/zaki_joho/)
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+競プロライブラリ: [Library](https://github.com/zaki-joho/ProconLibrary)  
+Twitter: [zaki_joho](https://twitter.com/zaki_joho)  
+AtCoder: [zaki_](https://atcoder.jp/users/zaki_)  
+CodeForces: [zaki_joho](https://codeforces.com/profile/zaki_joho)  
+TopCoder: [zaki_joho](https://www.topcoder.com/members/zaki_joho/)  
 
 ```markdown
 Syntax highlighted code block
@@ -27,13 +23,3 @@ Syntax highlighted code block
 
 [Link](url) and ![Image](src)
 ```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/zaki-joho/zaki-joho.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
