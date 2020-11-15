@@ -11,21 +11,22 @@ template <class flow_t>
 class fujishige_maxflow {
  public:
   fujishige_maxflow() : _n(0) {}
-  fujishige_maxflow(int n) : _n(n), g(n) {}
+  fujishige_maxflow(int n)
+      : _n(n), g(n), vs(_n, _n + 1), b(_n, 0), cap(_n, 0) {}
 
   struct edge {
     int from, to;
     flow_t cap, flow;
   };
 
-  int add_edge(int from, int to, flow_t cap) {
+  int add_edge(int from, int to, flow_t _cap) {
     assert(0 <= from && from < _n);
     assert(0 <= to && to < _n);
-    assert(0 <= cap);
+    assert(0 <= _cap);
     int from_id = int(g[from].size()), to_id = int(g[to].size()) + (from == to);
     int m = int(pos.size());
     pos.push_back({from, from_id});
-    g[from].push_back(_edge{to, to_id, cap});
+    g[from].push_back(_edge{to, to_id, _cap});
     g[to].push_back(_edge{from, from_id, 0});
     return m;
   }
@@ -59,56 +60,15 @@ class fujishige_maxflow {
     }
     // 1
     f = std::min(f, flow_limit);
-    std::vector<int> vs(_n, _n + 1);
-    std::vector<flow_t> b(_n, 0), cap(_n, 0);
-    while (f > 0) {
-      bool augmented = false;
-      // 2
-      std::queue<int> que({s});
-      std::vector<int> path;
-      std::fill(vs.begin(), vs.end(), _n + 1);
-      std::fill(b.begin(), b.end(), 0);
-      auto update_vs = [&](int v) {
-        vs[v] = path.size();
-        path.push_back(v);
-      };
-      // 5
-      while (!que.empty()) {
-        int v = que.front();
-        que.pop();
-        update_vs(v);
-        // 3
-        for (const auto &e : g[v]) {
-          if (!e.cap) continue;
-          if (vs[e.to] != _n + 1) continue;
-          if (b[e.to] < f && f <= b[e.to] + e.cap) {
-            que.push(e.to);
-          }
-          b[e.to] += e.cap;
-        }
-        if (v != t) continue;
-        // 6
-        std::fill(cap.begin(), cap.end(), 0);
-        cap[t] = f;
-        assert(path.back() == t);
-        while (path.size() > 1) {
-          for (auto &e : g[path.back()]) {
-            if (int(path.size()) <= vs[e.to]) continue;
-            auto &re = g[e.to][e.rev];
-            flow_t df = std::min(cap[path.back()], re.cap);
-            re.cap -= df;
-            e.cap += df;
-            cap[re.to] -= df;
-            cap[e.to] += df;
-          }
-          path.pop_back();
-        }
-        assert(path.back() == s);
-        augmented = true;
-        flow += f;
+    while (f > 0 && flow < flow_limit) {
+      while (f > flow_limit - flow) {
+        f /= 2;
       }
-      // 4
-      if (!augmented) f /= 2;
+      if (augment(s, t, f)) {
+        flow += f;
+        continue;
+      }
+      f /= 2;
     }
     return flow;
   }
@@ -132,6 +92,56 @@ class fujishige_maxflow {
   };
   std::vector<std::pair<int, int>> pos;
   std::vector<std::vector<_edge>> g;
+  std::vector<int> vs;
+  std::vector<flow_t> b, cap;
+
+  bool augment(int s, int t, flow_t f) {
+    // 2
+    std::queue<int> que({s});
+    std::vector<int> path;
+    std::fill(vs.begin(), vs.end(), _n + 1);
+    std::fill(b.begin(), b.end(), 0);
+    auto update_vs = [&](int v) {
+      vs[v] = path.size();
+      path.push_back(v);
+    };
+    // 5
+    while (!que.empty()) {
+      int v = que.front();
+      que.pop();
+      update_vs(v);
+      // 3
+      for (const auto &e : g[v]) {
+        if (!e.cap) continue;
+        if (vs[e.to] != _n + 1) continue;
+        if (b[e.to] < f && f <= b[e.to] + e.cap) {
+          que.push(e.to);
+        }
+        b[e.to] += e.cap;
+      }
+      if (v != t) continue;
+      // 6
+      std::fill(cap.begin(), cap.end(), 0);
+      cap[t] = f;
+      assert(path.back() == t);
+      while (path.size() > 1) {
+        for (auto &e : g[path.back()]) {
+          if (int(path.size()) <= vs[e.to]) continue;
+          auto &re = g[e.to][e.rev];
+          flow_t df = std::min(cap[path.back()], re.cap);
+          re.cap -= df;
+          e.cap += df;
+          cap[re.to] -= df;
+          cap[e.to] += df;
+        }
+        path.pop_back();
+      }
+      assert(path.back() == s);
+      return true;
+    }
+    // 4
+    return false;
+  }
 };
 
 #endif
