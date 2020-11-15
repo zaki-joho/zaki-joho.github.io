@@ -2,6 +2,7 @@
 #define ZAKI_PUSH_RELABEL_HPP
 
 #include <assert.h>
+#include <iostream>
 #include <limits>
 #include <queue>
 #include <vector>
@@ -75,6 +76,13 @@ class push_relabel {
       }
     }
     return ex[t];
+  }
+
+  void output_edges() const {
+    for (const auto &e : get_edges()) {
+      std::cerr << e.from << "->" << e.to << " : " << e.flow << "/" << e.cap
+                << std::endl;
+    }
   }
 
  private:

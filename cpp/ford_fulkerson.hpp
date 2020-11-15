@@ -2,7 +2,7 @@
 #define ZAKI_FORD_FULKERSON_HPP
 
 #include <assert.h>
-
+#include <iostream>
 #include <limits>
 #include <vector>
 
@@ -62,6 +62,13 @@ class ford_fulkerson {
 
   flow_t flow(int s, int t) {
     return flow(s, t, std::numeric_limits<flow_t>::max());
+  }
+
+  void output_edges() const {
+    for (const auto &e : get_edges()) {
+      std::cerr << e.from << "->" << e.to << " : " << e.flow << "/" << e.cap
+                << std::endl;
+    }
   }
 
  private:

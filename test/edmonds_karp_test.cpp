@@ -2,8 +2,6 @@
 
 #include "../cpp/edmonds_karp.hpp"
 
-#include <iostream>
-
 using namespace std;
 
 int main() {

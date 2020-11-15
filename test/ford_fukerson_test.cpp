@@ -1,7 +1,5 @@
 // http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_6_A
 
-#include <iostream>
-
 #include "../cpp/ford_fulkerson.hpp"
 
 using namespace std;
