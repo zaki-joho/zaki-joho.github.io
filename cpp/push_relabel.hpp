@@ -4,6 +4,7 @@
 #include <assert.h>
 
 #include <limits>
+#include <queue>
 #include <vector>
 
 template <class flow_t>
@@ -45,35 +46,31 @@ class push_relabel {
     return edges;
   }
 
-  flow_t flow(int s, int t, flow_t flow_limit) {
+  flow_t flow(int s, int t) {
     assert(0 <= s && s < _n);
     assert(0 <= t && t < _n);
     assert(s != t);
 
-    for (auto &e : g[s]) {
-      g[e.to][e.rev].cap += e.cap;
-      ex[s] += e.cap;
-      e.cap = 0;
-    }
+    initialize(s);
 
-    std::fill(level.begin(), level.end(), 0);
-    level[s] = _n;
-
-    flow_t flow = 0;
-    while(true /* active な頂点が存在 */){
-        // v = active vertex
-        if(true /* admissible な e in g[v] が存在 */){
-            // push(e)
+    while (!active.empty()) {
+      // v = active vertex
+      int v = active.top().second;
+      active.pop();
+      if (ex[v] == 0 || v == s || v == t) continue;
+      bool admissible = false;
+      for (auto &e : g[v]) {
+        // e is admissible <=> (e in G_f) and (label[v] = label[e.to] + 1)
+        if (e.cap > 0 && label[v] == label[e.to] + 1) {
+          push(v, e);
+          admissible = true;
         }
-        else{
-            // relabel(v)
-        }
+      }
+      if (!admissible) {
+        relabel(v);
+      }
     }
-    return flow;
-  }
-
-  flow_t flow(int s, int t) {
-    return flow(s, t, std::numeric_limits<flow_t>::max());
+    return ex[t];
   }
 
  private:
@@ -84,25 +81,49 @@ class push_relabel {
   };
   std::vector<std::pair<int, int>> pos;
   std::vector<std::vector<_edge>> g;
+  // ex[v] := (flow to v) - (flow from v)
   std::vector<flow_t> ex;
   std::vector<int> label;
+  // (label[i], i)
+  using P = std::pair<int, int>;
+  // v is active <=> ex[v] > 0
+  std::priority_queue<P> active;
+
+  void initialize(int s) {
+    std::fill(label.begin(), label.end(), 0);
+    label[s] = _n;
+    std::fill(ex.begin(), ex.end(), 0);
+
+    for (auto &e : g[s]) {
+      ex[s] += e.cap;
+      push(s, e);
+    }
+  }
 
   void push(int from, _edge &e) {
-      flow_t f = std::min(ex[from], e.cap);
-      e.cap -= f:
-      g[e.to][e.rev].cap += f;
-      ex[from] -= f;
-      ex[e.to] += f;
+    flow_t f = std::min(ex[from], e.cap);
+    e.cap -= f;
+    g[e.to][e.rev].cap += f;
+    ex[from] -= f;
+    ex[e.to] += f;
+
+    if (ex[from] > 0) active.push({label[from], from});
+    if (ex[e.to] > 0) active.push({label[e.to], e.to});
   }
 
-  void relabel(int v){
-      int label_min = std::numeric_limits<int>::max();
-      for(const auto &e:g[v]){
-          if(!e.cap) continue;
-          label_min = std::min(label_min, label[e.to]*1);
-      }
-      label[v] = label_min;
+  void relabel(int v) {
+    int new_label = std::numeric_limits<int>::max();
+    for (const auto &e : g[v]) {
+      if (!e.cap) continue;
+      new_label = std::min(new_label, label[e.to] + 1);
+    }
+    assert(label[v] < new_label);
+    label[v] = new_label;
+
+    if (ex[v] > 0) active.push({label[v], v});
   }
+
+  void global_relabel() {}
 };
 
 #endif
