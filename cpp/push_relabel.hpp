@@ -2,7 +2,6 @@
 #define ZAKI_PUSH_RELABEL_HPP
 
 #include <assert.h>
-
 #include <limits>
 #include <queue>
 #include <vector>
@@ -11,7 +10,7 @@ template <class flow_t>
 class push_relabel {
  public:
   push_relabel() : _n(0) {}
-  push_relabel(int n) : _n(n), g(n), ex(n), label(n) {}
+  push_relabel(int n) : _n(n), g(n), ex(n), label(n), relabel_count(0) {}
 
   struct edge {
     int from, to;
@@ -51,12 +50,13 @@ class push_relabel {
     assert(0 <= t && t < _n);
     assert(s != t);
 
-    initialize(s);
+    initialize(s, t);
 
     while (!active.empty()) {
       // v = active vertex
-      int v = active.top().second;
+      auto p = active.top();
       active.pop();
+      int v = p.second;
       if (ex[v] == 0 || v == s || v == t) continue;
       bool admissible = false;
       for (auto &e : g[v]) {
@@ -68,6 +68,10 @@ class push_relabel {
       }
       if (!admissible) {
         relabel(v);
+        relabel_count++;
+        if (relabel_count % _n == 0) {
+          global_relabel(s, t);
+        }
       }
     }
     return ex[t];
@@ -88,10 +92,10 @@ class push_relabel {
   using P = std::pair<int, int>;
   // v is active <=> ex[v] > 0
   std::priority_queue<P> active;
+  unsigned long long relabel_count;
 
-  void initialize(int s) {
-    std::fill(label.begin(), label.end(), 0);
-    label[s] = _n;
+  void initialize(int s, int t) {
+    global_relabel(s, t);
     std::fill(ex.begin(), ex.end(), 0);
 
     for (auto &e : g[s]) {
@@ -117,13 +121,28 @@ class push_relabel {
       if (!e.cap) continue;
       new_label = std::min(new_label, label[e.to] + 1);
     }
-    assert(label[v] < new_label);
     label[v] = new_label;
 
     if (ex[v] > 0) active.push({label[v], v});
   }
 
-  void global_relabel() {}
+  void global_relabel(int s, int t) {
+    std::queue<int> que({t});
+    std::fill(label.begin(), label.end(), std::numeric_limits<int>::max() / 2);
+    label[s] = _n;
+    label[t] = 0;
+    while (!que.empty()) {
+      int v = que.front();
+      que.pop();
+      for (const auto &e : g[v]) {
+        if (e.to == s) continue;
+        if (g[e.to][e.rev].cap > 0 && label[v] + 1 < label[e.to]) {
+          label[e.to] = label[v] + 1;
+          que.push(e.to);
+        }
+      }
+    }
+  }
 };
 
 #endif
