@@ -1,12 +1,15 @@
 # Dinic (+ Karzanov)
 
+- [実装(Karzanov 無し)](../cpp/dinic.hpp)
+- [実装(Karzanov あり)](../cpp/dinic_with_karzanov.hpp)
+
 ## アルゴリズム
 
 ## 計算量
 
-Karzanov 無しの場合: $O(E V^2)$
+Karzanov 無しの場合: $O(m n^2)$
 
-Karzanov ありの場合: $O(V^3)$
+Karzanov ありの場合: $O(n^3)$
 
 ## メモ
 
