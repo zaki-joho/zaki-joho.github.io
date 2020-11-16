@@ -58,7 +58,6 @@ class dinic {
       bfs(s);
       if (level[t] == -1) break;
       karzanov(s, t);
-      // std::cerr << "flow:" << ex[t] << std::endl;
     }
     return ex[t];
   }
@@ -104,8 +103,7 @@ class dinic {
   void karzanov(int s, int t) {
     ord.clear();
     bool ok = topological_sort();
-    assert(ok);
-    assert((int)ord.size() == _n);
+    assert(ok && (int)ord.size() == _n);
     for (int i = 0; i < _n; i++) {
       inv[ord[i]] = i;
     }
@@ -133,6 +131,7 @@ class dinic {
     for (auto v : ord) {
       if (ex[v] == 0) continue;
       for (auto& e : g[v]) {
+        if (!e.cap) continue;
         if (level[v] + 1 != level[e.to]) continue;
         if (frozen[e.to]) continue;
         flow_t f = std::min(ex[v], e.cap);
@@ -150,32 +149,27 @@ class dinic {
   }
 
   void balance(int s, int t, std::vector<std::stack<op>>& ops) {
-    while (!active.empty()) {
-      // std::cerr << "?" << std::endl;
-      int v = ord[active.top()];
-      active.pop();
-      if (ex[v] == 0 || v == t) continue;
-      if (frozen[v]) continue;
-      while (!ops[v].empty() && ex[v] > 0) {
-        // std::cerr << "!" << std::endl;
-        auto op = ops[v].top();
-        ops[v].pop();
+    int v = ord[active.top()];
+    active.pop();
+    if (ex[v] == 0 || v == t) return;
+    if (frozen[v]) return;
+    while (!ops[v].empty() && ex[v] > 0) {
+      auto op = ops[v].top();
+      ops[v].pop();
 
-        flow_t f = std::min(op.second, ex[v]);
-        auto& re = g[op.first.to][op.first.rev];
-        auto& e = g[re.to][re.rev];
+      flow_t f = std::min(op.second, ex[v]);
+      auto& re = g[op.first.to][op.first.rev];
+      auto& e = g[re.to][re.rev];
 
-        re.cap -= f;
-        e.cap += f;
-        ex[v] -= f;
-        ex[re.to] += f;
-        assert(v == e.to);
-        assert(!frozen[re.to]);
+      re.cap -= f;
+      e.cap += f;
+      ex[v] -= f;
+      ex[re.to] += f;
+      assert(!frozen[re.to]);
 
-        if (re.to != s && re.to != t && ex[re.to] > 0) active.push(re.to);
-      }
-      frozen[v] = 1;
+      if (re.to != s && re.to != t && ex[re.to] > 0) active.push(inv[re.to]);
     }
+    frozen[v] = 1;
   }
 
   bool visit(int v, std::vector<int>& col) {
