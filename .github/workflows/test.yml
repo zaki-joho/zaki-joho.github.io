@@ -20,8 +20,8 @@ jobs:
 
     - name: install modules
       run: |
-        pip3 install -U pip3
-        pip3 install -U online-judge-tools
+        pip install -U pip
+        pip install -U online-judge-tools
 
     - name: show versions
       run: |
