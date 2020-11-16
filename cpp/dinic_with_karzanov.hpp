@@ -81,7 +81,7 @@ class dinic {
   std::vector<flow_t> ex;
   // index of topological order
   std::priority_queue<int> active;
-  using op = std::pair<_edge, flow_t>;
+  using _op = std::pair<_edge, flow_t>;
 
   void bfs(int s) {
     std::fill(level.begin(), level.end(), -1);
@@ -109,7 +109,7 @@ class dinic {
     }
     std::fill(frozen.begin(), frozen.end(), 0);
     // e に沿って f 流した
-    std::vector<std::stack<op>> ops(_n);
+    std::vector<std::stack<_op>> ops(_n);
     for (auto& e : g[s]) {
       if (!e.cap) continue;
       if (level[s] + 1 != level[e.to]) continue;
@@ -127,7 +127,7 @@ class dinic {
     }
   }
 
-  void push(int s, int t, std::vector<std::stack<op>>& ops) {
+  void push(int s, int t, std::vector<std::stack<_op>>& ops) {
     for (auto v : ord) {
       if (ex[v] == 0) continue;
       for (auto& e : g[v]) {
@@ -148,7 +148,7 @@ class dinic {
     }
   }
 
-  void balance(int s, int t, std::vector<std::stack<op>>& ops) {
+  void balance(int s, int t, std::vector<std::stack<_op>>& ops) {
     int v = ord[active.top()];
     active.pop();
     if (ex[v] == 0 || v == t) return;
