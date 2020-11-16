@@ -2,16 +2,19 @@
 #define ZAKI_DINIC_WITH_KARZANOV_HPP
 
 #include <assert.h>
+#include <algorithm>
 #include <iostream>
 #include <limits>
 #include <queue>
+#include <stack>
+#include <tuple>
 #include <vector>
 
 template <class flow_t>
 class dinic {
  public:
   dinic() : _n(0) {}
-  dinic(int n) : _n(n), g(n), level(_n), iter(_n) {}
+  dinic(int n) : _n(n), g(n), level(_n), frozen(_n), inv(_n), ex(_n) {}
 
   struct edge {
     int from, to;
@@ -46,25 +49,18 @@ class dinic {
     return edges;
   }
 
-  flow_t flow(int s, int t, flow_t flow_limit) {
+  flow_t flow(int s, int t) {
     assert(0 <= s && s < _n);
     assert(0 <= t && t < _n);
     assert(s != t);
 
-    flow_t flow = 0;
-    while (flow < flow_limit) {
+    while (true) {
       bfs(s);
       if (level[t] == -1) break;
-      std::fill(iter.begin(), iter.end(), 0);
-      flow_t f = dfs(s, t, flow_limit - flow);
-      if (!f) break;
-      flow += f;
+      karzanov(s, t);
+      // std::cerr << "flow:" << ex[t] << std::endl;
     }
-    return flow;
-  }
-
-  flow_t flow(int s, int t) {
-    return flow(s, t, std::numeric_limits<flow_t>::max());
+    return ex[t];
   }
 
   void output_edges() const {
@@ -82,7 +78,11 @@ class dinic {
   };
   std::vector<std::pair<int, int>> pos;
   std::vector<std::vector<_edge>> g;
-  std::vector<int> level, iter;
+  std::vector<int> level, frozen, ord, inv;
+  std::vector<flow_t> ex;
+  // index of topological order
+  std::priority_queue<int> active;
+  using op = std::pair<_edge, flow_t>;
 
   void bfs(int s) {
     std::fill(level.begin(), level.end(), -1);
@@ -101,21 +101,105 @@ class dinic {
     }
   }
 
-  flow_t dfs(int v, int t, flow_t f) {
-    if (v == t) return f;
-    int level_v = level[v];
-    for (int i = iter[v]; i < (int)g[v].size(); i++) {
-      auto& e = g[v][i];
-      if (e.cap > 0 && level_v < level[e.to]) {
-        flow_t d = dfs(e.to, t, std::min(f, e.cap));
-        if (d > 0) {
-          e.cap -= d;
-          g[e.to][e.rev].cap += d;
-          return d;
-        }
+  void karzanov(int s, int t) {
+    ord.clear();
+    bool ok = topological_sort();
+    assert(ok);
+    assert((int)ord.size() == _n);
+    for (int i = 0; i < _n; i++) {
+      inv[ord[i]] = i;
+    }
+    std::fill(frozen.begin(), frozen.end(), 0);
+    // e に沿って f 流した
+    std::vector<std::stack<op>> ops(_n);
+    for (auto& e : g[s]) {
+      if (!e.cap) continue;
+      if (level[s] + 1 != level[e.to]) continue;
+      flow_t f = e.cap;
+      e.cap = 0;
+      g[e.to][e.rev].cap += f;
+      ex[e.to] += f;
+
+      ops[e.to].push({e, f});
+      if (e.to != s && e.to != t && ex[e.to] > 0) active.push(inv[e.to]);
+    }
+    while (!active.empty()) {
+      push(s, t, ops);
+      balance(s, t, ops);
+    }
+  }
+
+  void push(int s, int t, std::vector<std::stack<op>>& ops) {
+    for (auto v : ord) {
+      if (ex[v] == 0) continue;
+      for (auto& e : g[v]) {
+        if (level[v] + 1 != level[e.to]) continue;
+        if (frozen[e.to]) continue;
+        flow_t f = std::min(ex[v], e.cap);
+        if (!f) continue;
+        e.cap -= f;
+        g[e.to][e.rev].cap += f;
+        ex[v] -= f;
+        ex[e.to] += f;
+        ops[e.to].push({e, f});
+
+        if (v != s && v != t && ex[v] > 0) active.push(inv[v]);
+        if (e.to != s && e.to != t && ex[e.to] > 0) active.push(inv[e.to]);
       }
     }
-    return 0;
+  }
+
+  void balance(int s, int t, std::vector<std::stack<op>>& ops) {
+    while (!active.empty()) {
+      // std::cerr << "?" << std::endl;
+      int v = ord[active.top()];
+      active.pop();
+      if (ex[v] == 0 || v == t) continue;
+      if (frozen[v]) continue;
+      while (!ops[v].empty() && ex[v] > 0) {
+        // std::cerr << "!" << std::endl;
+        auto op = ops[v].top();
+        ops[v].pop();
+
+        flow_t f = std::min(op.second, ex[v]);
+        auto& re = g[op.first.to][op.first.rev];
+        auto& e = g[re.to][re.rev];
+
+        re.cap -= f;
+        e.cap += f;
+        ex[v] -= f;
+        ex[re.to] += f;
+        assert(v == e.to);
+        assert(!frozen[re.to]);
+
+        if (re.to != s && re.to != t && ex[re.to] > 0) active.push(re.to);
+      }
+      frozen[v] = 1;
+    }
+  }
+
+  bool visit(int v, std::vector<int>& col) {
+    col[v] = 1;
+    for (const auto& e : g[v]) {
+      if (!e.cap) continue;
+      if (level[v] + 1 != level[e.to]) continue;
+
+      if (col[e.to] == 2) continue;
+      if (col[e.to] == 1) return false;
+      if (!visit(e.to, col)) return false;
+    }
+    ord.push_back(v);
+    col[v] = 2;
+    return true;
+  }
+
+  bool topological_sort() {
+    std::vector<int> col(_n);
+    for (int v = 0; v < _n; v++) {
+      if (!col[v] && !visit(v, col)) return false;
+    }
+    std::reverse(ord.begin(), ord.end());
+    return true;
   }
 };
 
