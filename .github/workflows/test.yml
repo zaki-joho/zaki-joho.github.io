@@ -4,31 +4,37 @@ on:
       - master
   pull_request:
     branches:
-      - '**'
+      - "**"
 
 jobs:
   run-test:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: setup python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.8'
+      - uses: actions/cache@v2
+        id: workspace-cache
+        with:
+          path: ~/.workspace
+          key: ubuntu-latest-workspace
 
-    - name: install modules
-      run: |
-        pip install -U pip
-        pip install -U online-judge-tools
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
 
-    - name: show versions
-      run: |
-        g++ --version
-        python --version
-        oj --version
+      - name: install modules
+        run: |
+          pip install -U pip
+          pip install -U online-judge-tools
 
-    - name: run test
-      run: |
-        ./scripts/oj_test.sh
+      - name: show versions
+        run: |
+          g++ --version
+          python --version
+          oj --version
+
+      - name: run test
+        run: |
+          ./scripts/oj_test.sh
