@@ -31,4 +31,4 @@ jobs:
 
     - name: run test
       run: |
-        ./scripts/test.sh
+        ./scripts/oj_test.sh

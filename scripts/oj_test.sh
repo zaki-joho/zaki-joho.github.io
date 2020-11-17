@@ -23,13 +23,18 @@ TESTS=(
     ["push_relabel_test.cpp"]="GRL_6_A"
 )
 
+mkdir -p ${DIR}/.workspace
+pushd ${DIR}/.workspace
+
 for TEST in ${!TESTS[@]}; do
     ID=${TEST:0:-4}
     echo ${ID} ${TESTS[$TEST]}
-    mkdir -p ${TESTS[$TEST]}
-    pushd ${TESTS[$TEST]}
+    mkdir -p ${ID}
+    pushd ${ID}
     download_aoj ${TESTS[$TEST]}
     g++ -std=c++17 -O2 -Wall -Wextra -Wshadow ${DIR}/test/$TEST -o a.out
     oj test --tle 10 -d ${TESTS[$TEST]}
     popd
 done
+
+popd

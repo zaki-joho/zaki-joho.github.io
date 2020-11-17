@@ -1,0 +1,10 @@
+# executables
+*.out
+*.exe
+
+# testsuites
+*.in
+*.out
+
+# temp folder
+.workspace/
