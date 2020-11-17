@@ -7,7 +7,7 @@ using namespace std;
 int main() {
   int V, E;
   cin >> V >> E;
-  dinic<int> flow(V);
+  dinic_with_karzanov<int> flow(V);
   for (int i = 0; i < E; i++) {
     int u, v, c;
     cin >> u >> v >> c;

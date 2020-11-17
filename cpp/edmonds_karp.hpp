@@ -1,5 +1,5 @@
-#ifndef ZAKI_DINIC_HPP
-#define ZAKI_DINIC_HPP
+#ifndef ZAKI_EDMONDS_KARP_HPP
+#define ZAKI_EDMONDS_KARP_HPP
 
 #include <assert.h>
 #include <iostream>

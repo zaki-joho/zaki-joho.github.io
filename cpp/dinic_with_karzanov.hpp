@@ -11,10 +11,10 @@
 #include <vector>
 
 template <class flow_t>
-class dinic {
+class dinic_with_karzanov {
  public:
-  dinic() : _n(0) {}
-  dinic(int n) : _n(n), g(n), level(_n), frozen(_n), inv(_n), ex(_n) {}
+  dinic_with_karzanov() : _n(0) {}
+  dinic_with_karzanov(int n) : _n(n), g(n), level(_n), frozen(_n), inv(_n), ex(_n) {}
 
   struct edge {
     int from, to;
