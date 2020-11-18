@@ -2,7 +2,7 @@
 
 ## Contents
 
-最大流アルゴリズム: [maxflows](../zaki-pages/docs/maxflows.md)  
+最大流アルゴリズム: [maxflows](./docs/maxflows.md)  
 競プロライブラリ: [Library](https://github.com/zaki-joho/ProconLibrary)  
 <!-- Twitter: [zaki_joho](https://twitter.com/zaki_joho)-->
 AtCoder: [zaki_](https://atcoder.jp/users/zaki_)  
