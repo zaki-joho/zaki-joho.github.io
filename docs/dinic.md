@@ -4,11 +4,17 @@
 
 ## アルゴリズム
 
+残余グラフ上で最短経路グラフを求め, 最短経路グラフ上で増加路を選べなくなるまでフローを流す.
+同一の最短経路グラフを用いる期間を phase と呼び, ここで流されるフローをブロッキングフローと呼ぶ.(不正確)
+
 ## 計算量
 
 $O(m n^2)$
 
-[実装](https://github.com/zaki-joho/zaki-pages/blob/master/cpp/dinic.hpp)
+phase 毎に最短経路長が単調増加であることが示せて, phase 数は高々 $n$.
+dfs で増加路を見つけていて, 各 phase が $O(nm)$.
+
+## [実装](https://github.com/zaki-joho/zaki-pages/blob/master/cpp/dinic.hpp)
 
 ```cpp
 #include <assert.h>

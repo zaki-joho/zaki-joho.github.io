@@ -4,11 +4,16 @@
 
 ## アルゴリズム
 
+$\alpha = \max_{e\in E} u(e)$ とし, 始点から $\alpha$ 流せる頂点のみを使って終点に
+流量 $\alpha$ のフローを流す. 流せない場合, $\alpha = \lfloor \frac{\alpha}{2} \rfloor$ とし, 繰り返す.
+
 ## 計算量
 
 $O(nm\log u_{max})$
 
-[実装](https://github.com/zaki-joho/zaki-pages/blob/master/cpp/fujishige_maxflow.hpp)
+各 $\alpha$ で流せる流量は高々 $3\alpha n$ であることが示せる.
+
+## [実装](https://github.com/zaki-joho/zaki-pages/blob/master/cpp/fujishige_maxflow.hpp)
 
 ```cpp
 #include <assert.h>

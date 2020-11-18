@@ -4,9 +4,13 @@
 
 ## アルゴリズム
 
+増加路を dfs で見つけ, フローを流すことを増加路が存在しなくなるまで繰り返す.
+
 ## 計算量
 
 $O(Fm)$
+
+一回の dfs で $O(m)$, 最大 $F$ 回の反復が必要.
 
 ## [実装](https://github.com/zaki-joho/zaki-pages/blob/master/cpp/ford_fulkerson.hpp)
 

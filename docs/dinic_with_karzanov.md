@@ -4,11 +4,19 @@
 
 ## アルゴリズム
 
+Dinic においてブロッキングフローを選ぶステップを高速化したもの.
+各頂点に対し, 最短経路グラフにおけるトポロジカル順に push step を適用した後, トポロジカル逆順に balance step を適用する.
+
+push step で流せるだけ流して, balance step でフローを押し戻すイメージ(不正確)
+
 ## 計算量
 
 $O(n^3)$
 
-[実装](https://github.com/zaki-joho/zaki-pages/blob/master/cpp/dinic_with_karzanov.hpp)
+Dinic 同様, phase 数は高々 $n$.
+push step, balance step は高々 $n$ 回の反復で終了する.
+
+## [実装](https://github.com/zaki-joho/zaki-pages/blob/master/cpp/dinic_with_karzanov.hpp)
 
 ```cpp
 #include <assert.h>
