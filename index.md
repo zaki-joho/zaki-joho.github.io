@@ -2,14 +2,13 @@
 
 ## Contents
 
-最大流アルゴリズム: [maxflows](https://github.com/zaki-joho/zaki-pages/blob/master/docs/flows.md)  
+最大流アルゴリズム: [maxflows](../zaki-pages/docs/maxflows.md)  
 競プロライブラリ: [Library](https://github.com/zaki-joho/ProconLibrary)  
 <!-- Twitter: [zaki_joho](https://twitter.com/zaki_joho)-->
 AtCoder: [zaki_](https://atcoder.jp/users/zaki_)  
 CodeForces: [zaki_joho](https://codeforces.com/profile/zaki_joho)  
 TopCoder: [zaki_joho](https://www.topcoder.com/members/zaki_joho/)  
 はてなブログ: [zaki_joho](https://zaki-joho.hatenablog.com/)
-
 
 ## Vsinger
 
