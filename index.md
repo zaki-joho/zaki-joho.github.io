@@ -1,8 +1,8 @@
-# zaki githubio
+# zaki github.io
 
 ## Contents
 
-最大流アルゴリズム: [maxflows](https://github.com/zaki-joho/zaki-joho.github.io/blob/master/docs/flows.md)  
+最大流アルゴリズム: [maxflows](https://github.com/zaki-joho/zaki-pages/blob/master/docs/flows.md)  
 競プロライブラリ: [Library](https://github.com/zaki-joho/ProconLibrary)  
 <!-- Twitter: [zaki_joho](https://twitter.com/zaki_joho)-->
 AtCoder: [zaki_](https://atcoder.jp/users/zaki_)  
