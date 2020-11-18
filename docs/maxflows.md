@@ -1,6 +1,11 @@
 # フローアルゴリズム一覧
 
-## Links
+## Introduction
+
+Combinatorial optimization -Theory and Algorithms- 6th ed. (組合せ最適化―理論とアルゴリズム) の 8 Network Flows を基に実装したものです.
+バグや説明の誤りがありましたら [Issues](https://github.com/zaki-joho/zaki-pages/issues) で報告していただけると助かり案す.
+
+## Contents
 
 最大流
 
@@ -10,7 +15,14 @@
 - [Dinic + Karzanov](dinic.md)
 - [Fujishige](fujishige_maxflow.md)
 
-## notation
+最小費用流
+
+- Todo
+
+## Notations
+
+各ページでは以下の記号を断りなく用いる場合があります
+
 
 - $n$: 頂点数
 - $m$: 辺数
