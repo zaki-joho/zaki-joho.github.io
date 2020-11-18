@@ -3,7 +3,7 @@
 ## Introduction
 
 Combinatorial optimization -Theory and Algorithms- 6th ed. (組合せ最適化―理論とアルゴリズム) の 8 Network Flows を基に実装したものです.
-バグや説明の誤りがありましたら [Issues](https://github.com/zaki-joho/zaki-pages/issues) で報告していただけると助かり案す.
+バグや説明の誤りがありましたら [Issues](https://github.com/zaki-joho/zaki-pages/issues) で報告していただけると助かります.
 
 ## Contents
 
@@ -12,8 +12,9 @@ Combinatorial optimization -Theory and Algorithms- 6th ed. (組合せ最適化�
 - [Ford-Fulkerson](ford_fulkerson.md)
 - [Edamonds-Karp](edmonds_karp.md)
 - [Dinic](dinic.md)
-- [Dinic + Karzanov](dinic.md)
+- [Dinic + Karzanov](dinic_with_karzanov.md)
 - [Fujishige](fujishige_maxflow.md)
+- [push-relabel (Goldberg-Tarjan)](push_relabel.md)
 
 最小費用流
 

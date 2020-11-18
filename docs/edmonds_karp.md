@@ -1,12 +1,14 @@
 # Edmonds-Karp
 
+[Back](../docs/maxflows.md)
+
 ## アルゴリズム
 
 ## 計算量
 
 $O(m^2 n)$
 
-## [実装](../cpp/edmonds_karp.hpp)
+## [実装](https://github.com/zaki-joho/zaki-pages/blob/master/cpp/edmonds_karp.hpp)
 
 ```c++
 #include <assert.h>
