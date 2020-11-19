@@ -1,4 +1,4 @@
-# Push Relabel (Goldberg-Tarjan)
+# Push-Relabel algorithm (Goldberg-Tarjan algorithm)
 
 [Back](../docs/maxflows.md)
 

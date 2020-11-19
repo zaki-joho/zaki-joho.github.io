@@ -1,10 +1,10 @@
-# Dinic + Karzanov's algorithm
+# Dinic's algorithm + Karzanov's algorithm
 
 [Back](../docs/maxflows.md)
 
 ## アルゴリズム
 
-Dinic においてブロッキングフローを選ぶステップを高速化したもの.
+Dinic's algorithm においてブロッキングフローを選ぶステップを高速化したもの.
 各頂点に対し, 最短経路グラフにおけるトポロジカル順に push step を適用した後, トポロジカル逆順に balance step を適用する.
 
 push step で流せるだけ流して, balance step でフローを押し戻すイメージ(不正確)

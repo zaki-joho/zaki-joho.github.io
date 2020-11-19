@@ -1,4 +1,4 @@
-# Edmonds-Karp
+# Edmonds-Karp algorithm
 
 [Back](../docs/maxflows.md)
 

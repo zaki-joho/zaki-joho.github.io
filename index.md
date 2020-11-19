@@ -2,7 +2,7 @@
 
 ## Contents
 
-- 最大流アルゴリズム: [maxflows](./docs/maxflows.md)
+- フローアルゴリズム: [maxflows](./docs/maxflows.md)
 - はてなブログ: [zaki_joho](https://zaki-joho.hatenablog.com/)
 - 競プロライブラリ: [Library](https://github.com/zaki-joho/ProconLibrary)
 - AtCoder: [zaki_](https://atcoder.jp/users/zaki_)  

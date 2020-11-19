@@ -1,4 +1,4 @@
-# Dinic
+# Dinic's algorithm
 
 [Back](../docs/maxflows.md)
 

@@ -1,4 +1,4 @@
-# Ford-Fulkerson
+# Ford-Fulkerson algorithm
 
 [Back](../docs/maxflows.md)
 
