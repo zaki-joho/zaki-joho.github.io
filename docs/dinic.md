@@ -119,8 +119,7 @@ class dinic {
 
   flow_t dfs(int v, int t, flow_t f) {
     if (v == t) return f;
-    int level_v = level[v];
-    for (int i = iter[v]; i < (int)g[v].size(); i++) {
+    for (int &i = iter[v]; i < (int)g[v].size(); i++) {
       auto& e = g[v][i];
       if (e.cap > 0 && level_v < level[e.to]) {
         flow_t d = dfs(e.to, t, std::min(f, e.cap));
