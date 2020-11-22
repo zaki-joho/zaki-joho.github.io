@@ -1,5 +1,7 @@
 # フローアルゴリズム一覧
 
+![Build status](https://github.com/zaki-joho/zaki-pages/workflows/.github/workflows/test.yml/badge.svg?branch=master)
+
 ## Introduction
 
 Combinatorial optimization -Theory and Algorithms- 6th ed. (組合せ最適化―理論とアルゴリズム) の 8 Network Flows を基に実装したものです.
