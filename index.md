@@ -23,11 +23,11 @@
 - 競プロライブラリ: [Library](https://github.com/zaki-joho/ProconLibrary)
 - 京都大学プログラミングコンテスト: [KUPC](https://www.kupc.jp/)
 
-    ### Accounts
+### Accounts
 
-    - AtCoder: [zaki_](https://atcoder.jp/users/zaki_)  
-    - CodeForces: [zaki_joho](https://codeforces.com/profile/zaki_joho)  
-    - TopCoder: [zaki_joho](https://www.topcoder.com/members/zaki_joho/details/?track=DATA_SCIENCE&subTrack=SRM)  
+- AtCoder: [zaki_](https://atcoder.jp/users/zaki_)  
+- CodeForces: [zaki_joho](https://codeforces.com/profile/zaki_joho)  
+- TopCoder: [zaki_joho](https://www.topcoder.com/members/zaki_joho/details/?track=DATA_SCIENCE&subTrack=SRM)  
 
 ## V
 
